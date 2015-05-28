@@ -147,6 +147,6 @@ config.logLevels['*'] = $log.LEVEL.OFF;
 [codeclimate-url]: https://codeclimate.com/github/better-js-logging/better-logging-base
 [codeclimate-gpa-image]: https://codeclimate.com/github/better-js-logging/better-logging-base/badges/gpa.svg
 
-[codacy-url]: https://www.codacy.com/app/b-bottema/angular-logger
-[codacy-image]: https://www.codacy.com/project/badge/571878304e9b499f8992c908599fcc35
-[codacy-shields-image]: https://img.shields.io/codacy/571878304e9b499f8992c908599fcc35.svg?style=flat
+[codacy-url]: https://www.codacy.com/app/b-bottema/better-logging-base
+[codacy-image]: https://www.codacy.com/project/badge/b7a9273f00a84bf4894d2ad28b1dc617
+[codacy-shields-image]: https://img.shields.io/codacy/b7a9273f00a84bf4894d2ad28b1dc617.svg?style=flat
