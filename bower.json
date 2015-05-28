@@ -1,23 +1,23 @@
 {
-  "name": "angular-logger",
+  "name": "better-logging-base",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pdorgambide/angular-logger.git"
+    "url": "https://github.com/better-js-logging/better-logging-base.git"
   },
   "authors": [
-    "pdorgambide"
+    "Benny Bottema"
   ],
   "main": [
-      "./src/logger.js"
+      "./dist/enhanced-logger.min.js"
   ],
   "dependencies": {
-    "angular": "*",
     "momentjs": "*",
     "sprintf": "*"
   },
   "keywords": [
-    "angular",
+    "javascript",
+    "logging",
     "logger"
   ],
   "license": "MIT",
@@ -26,7 +26,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "spec"
   ],
   "devDependencies": {
   }

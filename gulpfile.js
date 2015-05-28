@@ -12,9 +12,9 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build', ['clean'], function() {
-    gulp.src(['src/logging-enhancer.js', 'src/angular-logger.js'])
+    gulp.src(['src/logging-enhancer.js'])
         .pipe(uglify())
-        .pipe(concat("logger.min.js"))
+        .pipe(concat("logging-enhancer.min.js"))
         .pipe(gulp.dest('dist'));
 });
 

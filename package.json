@@ -1,35 +1,29 @@
 {
-  "name": "angular-logger",
+  "name": "better-logging-base",
   "version": "1.0.0",
-  "description": "> Enhanced $log in AngularJS",
-  "main": "index.js",
+  "description": "> Utility to produce better logging statements including level management",
+  "main": "logging-enhancer.min.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pdorgambide/angular-logger"
+    "url": "https://github.com/better-js-logging/better-logging-base"
   },
   "keywords": [
-    "angular",
-    "logger",
-    "angular-logger",
-    "$log"
+    "javascript",
+    "logging",
+    "logger"
   ],
   "author": {
     "name": "Benny Bottema",
     "url": "http://blog.projectnibble.org"
   },
-  "contributors": [{
-    "name": "Pablo Dorgambide",
-    "email": "pdorgambide@qualigy.com",
-    "url": "http://www.qualigy.com"
-  }],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pdorgambide/angular-logger/issues"
+    "url": "https://github.com/better-js-logging/better-logging-base/issues"
   },
-  "homepage": "https://github.com/pdorgambide/angular-logger",
+  "homepage": "https://github.com/better-js-logging/better-logging-base",
   "devDependencies": {
     "gulp": "^3.8.11",
     "del": "^1.2.0",

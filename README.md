@@ -1,32 +1,8 @@
 [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url] [![Code Climate][codeclimate-gpa-image]][codeclimate-url] [![Codacy Badge][codacy-shields-image]][codacy-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-#angular-logger
+#better-logging-base
 
-```javascript
-logEnhancerProvider.prefixPattern = '%s::[%s]>';
-logEnhancerProvider.datetimePattern = 'dddd h:mm:ss a';
-logEnhancerProvider.logLevels = {
-	'*': logEnhancerProvider.LEVEL.OFF,
-	'main': logEnhancerProvider.LEVEL.WARN,
-	'main.subB': logEnhancerProvider.LEVEL.TRACE
-};
 
-$log.getInstance('banana').info('Hello World!'); // ignored, logging turned off for '*'
-$log.getInstance('main.subA').info('Hello World!'); // ignored, doesn't pass logging threshold of 'main'
-$log.getInstance('main.subB').trace('Hello World!'); // 17-5-2015 11:52:52::[main.subB]> Hello World!
-$log.getInstance('main.subB').info('Hello %s!', 'World', { 'extra': ['pass-through params'] }); 
-// 17-5-2015 11:53:51::[main.subB]> Hello World! Object { "extra": "pass-through params"}
-```
-
----
-
-* Enhances Angular's `$log` service so that you can define **separate contexts** to log for, where the output will be prepended with the context's name and a datetime stamp.
-* Further enhances the logging functions so that you can **apply patterns** eliminatinging the need of manually concatenating your strings
-* Introduces **log levels**, where you can manage logging output per context or even a group of contexts
-* Works as a **complete drop-in** replacement for your current `$log.log` or `console.log` statements
-* [original post](http://blog.projectnibble.org/2013/12/23/enhance-logging-in-angularjs-the-simple-way/)
-
----
 
 - [Installing](#installing)
 		- [Bower](#bower)
@@ -43,12 +19,12 @@ $log.getInstance('main.subB').info('Hello %s!', 'World', { 'extra': ['pass-throu
 <a name='installing'/>
 ## Installing
 
-angular-logger has optional dependencies on _[momentjs](https://github.com/moment/moment)_ and _[sprintf.js](https://github.com/alexei/sprintf.js)_: without moment you can't pattern a nicely readable datetime stamp and without sprintf you can't pattern your logging input lines. Default fixed patterns are applied if either they are missing.
+_better-logging-base_ has optional dependencies on _[momentjs](https://github.com/moment/moment)_ and _[sprintf.js](https://github.com/alexei/sprintf.js)_: without moment you can't pattern a nicely readable datetime stamp and without sprintf you can't pattern your logging input lines. Default fixed patterns are applied if either they are missing.
 
 <a name='bower'/>
 #### Bower
 
-Will be implemented under [issue #10](https://github.com/pdorgambide/angular-logger/issues/10)
+Will be implemented
 
 <a name='manually'/>
 #### Manually
@@ -58,27 +34,7 @@ Include _logger.js_, _[momentjs](https://github.com/moment/moment)_ and _[sprint
 <a name='getting-started'/>
 ## Getting Started
 
-1. After installing, add `logger` module as a dependency to your module:
-
-   ```javascript
-   angular.module('YourModule', ['logger'])
-   ```
-2. Start logging for your context
-
-   ```javascript
-   app.controller('LogTestCtrl', function ($log) {
-      var normalLogger = $log.getInstance('Normal');
-      var mutedLogger = $log.getInstance('Muted');
-   
-      $log.logLevels['Muted'] = $log.LEVEL.OFF;
-   
-      this.doTest = function () {
-         normalLogger.info("This *will* appear in your console");
-         mutedLogger.info("This will *not* appear in your console");
-      }
-   });
-   ```
-   [working demo](http://jsfiddle.net/plantface/d7qkaumr/)
+todo...
 
 <a name='applying-patterns'/>
 ## Applying Patterns
@@ -91,45 +47,14 @@ By default, the prefix is formatted like so:
 
 However, you can change this as follows:
 
-```javascript
-app.config(function (logEnhancerProvider) {
-   logEnhancerProvider.prefixPattern = '%s - %s: ';
-});
-app.run(function($log) {
-   $log.getInstance('app').info('Hello World');
-});
-// was:    Sunday 12:55:07 am::[app]>Hello World
-// became: Sunday 12:55:07 am - app: Hello World
-```
-
-You can also remove it completely, or have just the datetime stamp or just the context prefixed:
-
-```javascript
-// by the power of sprintf!
-logEnhancerProvider.prefixPattern = '%s - %s: '; // both
-logEnhancerProvider.prefixPattern = '%s: '; // timestamp
-logEnhancerProvider.prefixPattern = '%1$s: '; // timestamp by index
-logEnhancerProvider.prefixPattern = '%2$s: '; // context by index
-logEnhancerProvider.prefixPattern = '%2$s - %1$s: '; // both, reversed
-```
-
-This works, because angular-logger will use two arguments for the prefix, which can be referenced by index.
+todo...
 
 <a name='datetime-stamp-patterns'/>
 #### Datetime stamp patterns
 
-If you have included _moment.js_ in your webapp, you can start using datetime stamp patterns with angular-logger. The default pattern is `dddd h:mm:ss a`, which translates to _Sunday 12:55:07 am_. You customize the pattern as follows:
+If you have included _moment.js_ in your webapp, you can start using datetime stamp patterns with _better-logging-base_. The default pattern is `dddd h:mm:ss a`, which translates to _Sunday 12:55:07 am_. You customize the pattern as follows:
 
-```javascript
-app.config(function (logEnhancerProvider) {
-   logEnhancerProvider.datetimePattern = 'dddd';
-});
-app.run(function($log) {
-   $log.getInstance('app').info('Hello World');
-});
-// was:    Sunday 12:55:07 am::[app]>Hello World
-// became: Sunday::[app]>Hello World
-```
+todo...
 
 This way you can switch to a 24h format this way as well, for example, or use your locale-specific format.
 
@@ -138,18 +63,17 @@ This way you can switch to a 24h format this way as well, for example, or use yo
 <a name='logging-patterns'/>
 #### Logging patterns
 
-If you have included _sprintf.js_ in your webapp, you can start using patterns with _angular-logger_.
+If you have included _sprintf.js_ in your webapp, you can start using patterns with _better-logging-base_.
 
-Traditional style with `$log` or `console`:
+Traditional style with `console`:
 ```javascript
-$log.error ("Error uploading document [" + filename + "], Error: '" + err.message + "'. Try again later.")
+console.error ("Error uploading document [" + filename + "], Error: '" + err.message + "'. Try again later.")
 // Error uploading document [contract.pdf], Error: 'Service currently down'. Try again later. "{ ... }"
 ```
 
-Modern style with angular-logger enhanced `$log`:
+Modern style with _better-logging-base_ enhanced console:
  ```javascript
-var logger = $log.getInstance("myapp.file-upload");
-logger.error("Error uploading document [%s], Error: '%s'. Try again later.", filename, err.message)
+console.error("Error uploading document [%s], Error: '%s'. Try again later.", filename, err.message)
 // Sunday 12:13:06 pm::[myapp.file-upload]> Error uploading document [contract.pdf], Error: 'Service currently down'. Try again later.
  ```
 
@@ -157,7 +81,6 @@ logger.error("Error uploading document [%s], Error: '%s'. Try again later.", fil
 
 You can even **combine pattern input and normal input**:
  ```javascript
-var logger = $log.getInstance('test');
 logger.warn("This %s pattern %j", "is", "{ 'in': 'put' }", "but this is not!", ['this', 'is', ['handled'], 'by the browser'], { 'including': 'syntax highlighting', 'and': 'console interaction' });
 // 17-5-2015 00:16:08::[test]>  This is pattern "{ 'in': 'put' }" but this is not! ["this", "is handled", "by the browser"] Object {including: "syntax highlighting", and: "console interaction"}
  ```
@@ -181,17 +104,7 @@ Using logging levels, we can manage output on several levels. Contexts can be na
 
 For example for `'a.b'` and `a.c` we can define a general log level for `a` and have a different log level for only 'a.c'.
 
-The following logging functions (left side) are available:
-
-logging function  | mapped to: | with logLevel
------------------ | --------------- | --------------
-_`logger.trace`_  | _`$log.debug`_       | `TRACE`
-_`logger.debug`_  | _`$log.debug`_       | `DEBUG`
-_`logger.log*`_   | _`$log.log`_        | `INFO`
-_`logger.info`_   | _`$log.info`_        | `INFO`
-_`logger.warn`_   | _`$log.warn`_        | `WARN`
-_`logger.error`_  | _`$log.error`_       | `ERROR`
-`*` maintained for backwards compatibility with `$log.log`
+todo...
 
 The level's order are as follows:
 ```
@@ -205,40 +118,34 @@ The level's order are as follows:
 Example:
 
 ```javascript
-// config log levels before the application wakes up
-app.config(function (logEnhancerProvider) {
-    logEnhancerProvider.prefixPattern = '%s::[%s]> ';
-    logEnhancerProvider.logLevels = {
-        'a.b.c': logEnhancerProvider.LEVEL.TRACE, // trace + debug + info + warn + error
-        'a.b.d': logEnhancerProvider.LEVEL.ERROR, // error
-        'a.b': logEnhancerProvider.LEVEL.DEBUG, // debug + info + warn + error
-        'a': logEnhancerProvider.LEVEL.WARN, // warn + error
-        '*': logEnhancerProvider.LEVEL.INFO // info + warn + error
-    };
-    // globally only INFO and more important are logged
-    // for group 'a' default is WARN and ERROR
-    // a.b.c and a.b.d override logging everything-with-TRACE and least-with-ERROR respectively
-});
+config.prefixPattern = '%s::[%s]> ';
+config.logLevels = {
+    'a.b.c': logEnhancerProvider.LEVEL.TRACE, // trace + debug + info + warn + error
+    'a.b.d': logEnhancerProvider.LEVEL.ERROR, // error
+    'a.b': logEnhancerProvider.LEVEL.DEBUG, // debug + info + warn + error
+    'a': logEnhancerProvider.LEVEL.WARN, // warn + error
+    '*': logEnhancerProvider.LEVEL.INFO // info + warn + error
+};
+// globally only INFO and more important are logged
+// for group 'a' default is WARN and ERROR
+// a.b.c and a.b.d override logging everything-with-TRACE and least-with-ERROR respectively
 
-
-// modify log levels after the application started running
-run(function ($log) {
-    $log.logLevels['a.b.c'] = $log.LEVEL.ERROR;
-    $log.logLevels['*'] = $log.LEVEL.OFF;
-});
+// modify later:
+config.logLevels['a.b.c'] = $log.LEVEL.ERROR;
+config.logLevels['*'] = $log.LEVEL.OFF;
 ```
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
 
-[travis-url]: http://travis-ci.org/pdorgambide/angular-logger
-[travis-image]: https://img.shields.io/travis/pdorgambide/angular-logger.svg?style=flat
+[travis-url]: http://travis-ci.org/better-js-logging/better-logging-base
+[travis-image]: https://img.shields.io/travis/better-js-logging/better-logging-base.svg?style=flat
 
-[coveralls-url]: https://coveralls.io/r/pdorgambide/angular-logger?branch=master
-[coveralls-image]: https://coveralls.io/repos/pdorgambide/angular-logger/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/r/better-js-logging/better-logging-base?branch=master
+[coveralls-image]: https://coveralls.io/repos/better-js-logging/better-logging-base/badge.svg?branch=master
 
-[codeclimate-url]: https://codeclimate.com/github/pdorgambide/angular-logger
-[codeclimate-gpa-image]: https://codeclimate.com/github/pdorgambide/angular-logger/badges/gpa.svg
+[codeclimate-url]: https://codeclimate.com/github/better-js-logging/better-logging-base
+[codeclimate-gpa-image]: https://codeclimate.com/github/better-js-logging/better-logging-base/badges/gpa.svg
 
 [codacy-url]: https://www.codacy.com/app/b-bottema/angular-logger
 [codacy-image]: https://www.codacy.com/project/badge/571878304e9b499f8992c908599fcc35
