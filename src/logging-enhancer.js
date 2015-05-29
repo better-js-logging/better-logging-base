@@ -105,11 +105,14 @@
 		};
 	};
 
-	if (typeof window !== 'undefined') {
-		window.loggingEnhancer = new LoggingEnhancer(window.sprintf, window.moment);
-	}
-
-	if (typeof exports !== 'undefined') {
+	if (typeof module !== 'undefined') {
+		module.exports.LoggingEnhancer = LoggingEnhancer;
+	} else if (typeof exports !== 'undefined') {
 		exports.LoggingEnhancer = LoggingEnhancer;
+	} else if (typeof window !== 'undefined') {
+		window.loggingEnhancer = new LoggingEnhancer(window.sprintf, window.moment);
+	} else {
+		throw new Error('unable to expose LoggingEnhancer: no module, exports object and no global window detected');
 	}
+	
 })();

@@ -6,11 +6,9 @@
     "url": "https://github.com/better-js-logging/better-logging-base.git"
   },
   "authors": [
-    "Benny Bottema"
+    "Benny Bottema (http://blog.projectnibble.org/)"
   ],
-  "main": [
-      "./dist/enhanced-logger.min.js"
-  ],
+  "main": "./dist/logging-enhancer.min.js",
   "dependencies": {
     "momentjs": "*",
     "sprintf": "*"
@@ -29,6 +27,10 @@
     "tests",
     "spec"
   ],
-  "devDependencies": {
-  }
+  "homepage": "https://github.com/better-js-logging/better-logging-base",
+  "description": "Utility to produce better logging statements including level management",
+  "moduleType": [
+    "node"
+  ],
+  "private": true
 }
