@@ -31,6 +31,5 @@
   "description": "Utility to produce better logging statements including level management",
   "moduleType": [
     "node"
-  ],
-  "private": true
+  ]
 }
