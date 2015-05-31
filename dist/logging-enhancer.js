@@ -1,7 +1,12 @@
+/* global module, exports, window */
+
 /*
 	LoggingEnhancer can be used to enhance any logging function and can be tested without angular
 */
 (function() {
+	
+	'use strict';
+
 	var LoggingEnhancer = function(sprintf, moment) {
 		var self = this;
 

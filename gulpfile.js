@@ -3,6 +3,15 @@ var lazypipe = require('lazypipe');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
+// globally handle all missed error events
+var gulp_src = gulp.src;
+gulp.src = function() {
+    return gulp_src.apply(gulp, arguments).pipe($.plumber(function(error) {
+        $.util.log($.util.colors.red('Error (' + error.plugin + '): ' + error.message), $.util.colors.red(error.stack));
+        this.emit('end');
+    }));
+};
+
 gulp.task('clean', function() {
     del(['dist/*', 'reports', 'debug', '.coverdata']);
 });
