@@ -28,7 +28,9 @@
     "bower_components",
     "test",
     "tests",
-    "spec"
+    "spec",
+    "src",
+    "./*"
   ],
   "homepage": "https://github.com/better-js-logging/better-logging-base",
   "description": "Utility to produce better logging statements including level management",
