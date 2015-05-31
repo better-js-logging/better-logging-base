@@ -1,45 +1,52 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
 var del = require('del');
-var uglify = require('gulp-uglify');
-var jasmine = require('gulp-jasmine');
-var cover = require('gulp-coverage');
-var coveralls = require('gulp-coveralls');
 var lazypipe = require('lazypipe');
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
 
 gulp.task('clean', function() {
     del(['dist/*', 'reports', 'debug', '.coverdata']);
 });
 
-gulp.task('build', ['clean'], function() {
+gulp.task('analyse', function() {
     gulp.src(['src/logging-enhancer.js'])
-        .pipe(uglify())
-        .pipe(concat("logging-enhancer.min.js"))
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'))
+        .pipe($.jshint.reporter('fail'));
+});
+
+gulp.task('build', ['clean', 'analyse'], function() {
+    gulp.src(['src/logging-enhancer.js'])
+        .pipe($.concat("logging-enhancer.js"))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist', ['build'], function() {
+    gulp.src(['src/logging-enhancer.js'])
+        .pipe($.uglify())
+        .pipe($.concat("logging-enhancer.min.js"))
         .pipe(gulp.dest('dist'));
 });
 
 var testAndGather = lazypipe()
-    .pipe(cover.instrument, {
+    .pipe($.coverage.instrument, {
         pattern: ['src/**/*.js'],
         debugDirectory: 'debug'
     })
-    .pipe(jasmine, {includeStackTrace: true})
-    .pipe(cover.gather);
+    .pipe($.jasmine, {includeStackTrace: true})
+    .pipe($.coverage.gather);
 
 gulp.task('test', ['build'], function () {
     gulp.src('spec/**/*spec.js')
         .pipe(testAndGather())
-        .pipe(cover.format(['html']))
+        .pipe($.coverage.format(['html']))
         .pipe(gulp.dest('reports'));
 });
 
 gulp.task('travis', ['build'], function () {
     gulp.src('spec/**/*spec.js')
         .pipe(testAndGather())
-        .pipe(cover.format(['lcov']))
-        .pipe(coveralls());
+        .pipe($.coverage.format(['lcov']))
+        .pipe($.coveralls());
 });
 
-gulp.task('default', ['build'], function() {
-    // place code for your default task here
-});
+gulp.task('default', ['build'], function() {});
