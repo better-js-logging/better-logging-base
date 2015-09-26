@@ -10,9 +10,6 @@
   ],
   "main": "./dist/logging-enhancer.min.js",
   "dependencies": {
-    
-  },
-  "devDependencies": {
     "momentjs": "*",
     "sprintf": "*"
   },
