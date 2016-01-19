@@ -17,7 +17,7 @@
 			config.logLevels = config.logLevels || [];
 			return function() {
 				if (levelPassesThreshold(context, level, config)) {
-					var enhancedArguments = enhanceLogline(arguments, context, datetimePattern, datetimeLocale, prefixPattern);
+					var enhancedArguments = enhanceLogline(arguments, context, level, datetimePattern, datetimeLocale, prefixPattern);
 					loggingFunc.apply(null, enhancedArguments);
 					return enhancedArguments;
 				}
@@ -42,8 +42,8 @@
 				}
 			}
 
-			function enhanceLogline(args, context, datetimePattern, datetimeLocale, prefixPattern) {
-				var prefix = generatePrefix(context, datetimePattern, datetimeLocale, prefixPattern);
+			function enhanceLogline(args, context, level, datetimePattern, datetimeLocale, prefixPattern) {
+				var prefix = generatePrefix(context, level, datetimePattern, datetimeLocale, prefixPattern);
 				var processedArgs = maybeApplySprintf([].slice.call(args));
 				return [prefix].concat([].slice.call(processedArgs));
 
@@ -69,7 +69,7 @@
 				}
 			}
 
-			function generatePrefix(context, datetimePattern, datetimeLocale, prefixPattern) {
+			function generatePrefix(context, level, datetimePattern, datetimeLocale, prefixPattern) {
 				var dateStr = '';
 				if (typeof moment !== 'undefined') {
 					dateStr = moment().locale(datetimeLocale).format(datetimePattern);
@@ -79,13 +79,18 @@
 					var timeStr = new Date().toTimeString().match(/^([0-9]{2}:[0-9]{2}:[0-9]{2})/)[0];
 					dateStr = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + timeStr;
 				}
+				
+				for (var levelName in self.LEVEL) {
+					if (self.LEVEL[levelName] === level) { break; }
+				}
+				levelName = levelName.toLowerCase();
 
 				if (typeof sprintf !== 'undefined') {
-					return sprintf(prefixPattern, dateStr, context);
+					return sprintf(prefixPattern, dateStr, context, levelName);
 				}
 				else {
-					// use fixed layout: '%s::[%s]> '
-					return dateStr + '::[' + context + ']> ';
+					// use fixed layout: '%s::[%s]%s> '
+					return dateStr + '::' + context + '::' + levelName + '> ';
 				}
 			}
 		};

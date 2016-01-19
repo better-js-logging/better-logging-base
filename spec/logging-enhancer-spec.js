@@ -24,27 +24,33 @@ describe('logging-enhancer', function() {
     });
     
     it('should log simple strings with various prefix configurations', function() {
-        var f_none      = enh.enhanceLogging(dummy.trace, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '');
-        var f_both      = enh.enhanceLogging(dummy.trace, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%s(%s): ');
-        var f_date1     = enh.enhanceLogging(dummy.warn, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%s: ');
-        var f_date2     = enh.enhanceLogging(dummy.warn, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%1$s: ');
-        var f_context   = enh.enhanceLogging(dummy.error, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%2$s: ');
-        var f_reversed  = enh.enhanceLogging(dummy.debug, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%2$s(%1$s): ');
+        var f_none              = enh.enhanceLogging(dummy.trace, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '');
+        var f_both              = enh.enhanceLogging(dummy.trace, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%s(%s): ');
+        var f_both_level        = enh.enhanceLogging(dummy.trace, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%s(%s)%s: ');
+        var f_date1             = enh.enhanceLogging(dummy.warn, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%s: ');
+        var f_date2             = enh.enhanceLogging(dummy.warn, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%1$s: ');
+        var f_context           = enh.enhanceLogging(dummy.error, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%2$s: ');
+        var f_reversed          = enh.enhanceLogging(dummy.debug, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%2$s(%1$s): ');
+        var f_level             = enh.enhanceLogging(dummy.debug, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%3$s: ');
+        var f_level_reversed    = enh.enhanceLogging(dummy.debug, enh.LEVEL.TRACE, 'dummy', {}, 'dddd hh', 'en', '%2$s(%3$s): ');
         
         var datestr = moment().format('dddd hh'); // as we can't mock momentjs, let's at least have an hour resolution
         
-        expect(f_none('Hello World!'))      .toEqual(['', 'Hello World!']);
-        expect(f_both('Hello World!'))      .toEqual([datestr + '(dummy): ', 'Hello World!']);
-        expect(f_both('%%'))                .toEqual([datestr + '(dummy): ', '%%']);
-        expect(f_date1('Hello World!'))     .toEqual([datestr + ': ', 'Hello World!']);
-        expect(f_date2('Hello World!'))     .toEqual([datestr + ': ', 'Hello World!']);
-        expect(f_context('Hello World!'))   .toEqual(['dummy: ', 'Hello World!']);
-        expect(f_reversed('Hello World!'))  .toEqual(['dummy(' + datestr + '): ', 'Hello World!']);
+        expect(f_none('Hello World!'))              .toEqual(['', 'Hello World!']);
+        expect(f_both('Hello World!'))              .toEqual([datestr + '(dummy): ', 'Hello World!']);
+        expect(f_both('%%'))                        .toEqual([datestr + '(dummy): ', '%%']);
+        expect(f_both_level('Hello World!'))        .toEqual([datestr + '(dummy)trace: ', 'Hello World!']);
+        expect(f_date1('Hello World!'))             .toEqual([datestr + ': ', 'Hello World!']);
+        expect(f_date2('Hello World!'))             .toEqual([datestr + ': ', 'Hello World!']);
+        expect(f_context('Hello World!'))           .toEqual(['dummy: ', 'Hello World!']);
+        expect(f_reversed('Hello World!'))          .toEqual(['dummy(' + datestr + '): ', 'Hello World!']);
+        expect(f_level('Hello World!'))             .toEqual(['trace: ', 'Hello World!']);
+        expect(f_level_reversed('Hello World!'))    .toEqual(['dummy(trace): ', 'Hello World!']);
         
-        expect(counters[TRACE]).toBe(3);
+        expect(counters[TRACE]).toBe(4);
         expect(counters[WARN]).toBe(2);
         expect(counters[ERROR]).toBe(1);
-        expect(counters[DEBUG]).toBe(1);
+        expect(counters[DEBUG]).toBe(3);
     });
     
     it('should log with sprintf replacements', function() {
@@ -107,8 +113,8 @@ describe('logging-enhancer', function() {
         enh = new (require('../src/logging-enhancer.js').LoggingEnhancer)(undefined, moment);
         
         var f = enh.enhanceLogging(dummy.debug, enh.LEVEL.TRACE, 'dummy', {}, 'YYYY', 'en', '');
-        expect(f('Hello World!')).toEqual([moment().year() + '::[dummy]> ', 'Hello World!']);
-        expect(f('%s %s!', 'Hello', 'World', [1,2,3])).toEqual([moment().year() + '::[dummy]> ', '%s %s!', 'Hello', 'World', [1,2,3]]);
+        expect(f('Hello World!')).toEqual([moment().year() + '::dummy::trace> ', 'Hello World!']);
+        expect(f('%s %s!', 'Hello', 'World', [1,2,3])).toEqual([moment().year() + '::dummy::trace> ', '%s %s!', 'Hello', 'World', [1,2,3]]);
         
         expect(counters[DEBUG]).toBe(2);
     });
