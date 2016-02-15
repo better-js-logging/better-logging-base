@@ -2,7 +2,7 @@
   "name": "better-logging-base",
   "version": "1.1.0",
   "description": "> Utility to produce better logging statements including level management",
-  "main": "logging-enhancer.min.js",
+  "main": "dist/logging-enhancer.js",
   "scripts": {
     "test": "gulp test"
   },
